@@ -12,14 +12,12 @@
           placeholder="Nombre"
           required
           v-bind:class="{
-            'is-invalid':
-              !validString(form.name) && formValidationState.nameBlured,
-            'is-valid': validString(form.name),
+            'is-invalid': !formValidationState.nameValid,
+            'is-valid': formValidationState.nameValid,
           }"
-          v-on:blur="formValidationState.nameBlured = true"
+          v-on:blur="formValidationState.nameValid = validString(form.name)"
         />
-        <span class="valid" v-if="validString(form.name)">✅️</span>
-        <small class="d-block error" v-if="!validString(form.name)">
+        <small class="d-block error" v-if="!formValidationState.nameValid">
           El nombre debe contener al menos 2 caracteres
         </small>
       </div>
@@ -37,14 +35,14 @@
           placeholder="Apellido"
           required
           v-bind:class="{
-            'is-invalid':
-              !validString(form.lastName) && formValidationState.lastNameBlured,
-            'is-valid': validString(form.lastName),
+            'is-invalid': !formValidationState.lastNameValid,
+            'is-valid': formValidationState.lastNameValid,
           }"
-          v-on:blur="formValidationState.lastNameBlured = true"
+          v-on:blur="
+            formValidationState.lastNameValid = validString(form.lastName)
+          "
         />
-        <span class="valid" v-if="validString(form.lastName)">✅️</span>
-        <small class="d-block error" v-if="!validString(form.lastName)">
+        <small class="d-block error" v-if="!formValidationState.lastNameValid">
           El apellido debe contener al menos 2 caracteres</small
         >
       </div>
@@ -62,13 +60,12 @@
           placeholder="Email"
           required
           v-bind:class="{
-            'is-invalid': !validEmail() && formValidationState.emailBlured,
-            'is-valid': validEmail(),
+            'is-invalid': !formValidationState.emailValid,
+            'is-valid': formValidationState.emailValid,
           }"
-          v-on:blur="formValidationState.emailBlured = true"
+          v-on:blur="formValidationState.emailValid = validEmail()"
         />
-        <span class="valid" v-if="validEmail()">✅️</span>
-        <small class="d-block error" v-if="!validEmail()"
+        <small class="d-block error" v-if="!formValidationState.emailValid"
           >El formato de mail no es correcto</small
         >
       </div>
@@ -86,14 +83,12 @@
           placeholder="dd / mm / aaaa"
           required
           v-bind:class="{
-            'is-invalid':
-              !validBirthday() && formValidationState.birthdayBlured,
-            'is-valid': validBirthday(),
+            'is-invalid': !formValidationState.birthdayValid,
+            'is-valid': formValidationState.birthdayValid,
           }"
-          v-on:blur="formValidationState.birthdayBlured = true"
+          v-on:blur="formValidationState.birthdayValid = validBirthday()"
         />
-        <span class="valid" v-if="validBirthday()">✅️</span>
-        <small class="d-block error" v-if="!validBirthday()">
+        <small class="d-block error" v-if="!formValidationState.birthdayValid">
           La fecha de nacimiento debe ser anterior al día de hoy</small
         >
       </div>
@@ -122,13 +117,12 @@
           type="tel"
           placeholder="Teléfono"
           v-bind:class="{
-            'is-invalid': !validatePhone() && formValidationState.phoneBlured,
-            'is-valid': validatePhone(),
+            'is-invalid': !formValidationState.phoneValid,
+            'is-valid': formValidationState.phoneValid,
           }"
-          v-on:blur="formValidationState.phoneBlured = true"
+          v-on:blur="formValidationState.phoneValid = validatePhone()"
         />
-        <span class="valid" v-if="validatePhone()">✅️</span>
-        <small class="d-block error" v-if="!validatePhone()">
+        <small class="d-block error" v-if="!formValidationState.phoneValid">
           El formato de teléfono no es correcto</small
         >
       </div>
@@ -187,11 +181,11 @@ const provinces = [
 ];
 
 const formValidationState = reactive({
-  nameBlured: false,
-  lastNameBlured: false,
-  emailBlured: false,
-  birthdayBlured: false,
-  phoneBlured: false,
+  nameValid: true,
+  lastNameValid: true,
+  emailValid: true,
+  birthdayValid: true,
+  phoneValid: true,
 });
 
 const onSubmit = () => {
@@ -201,16 +195,16 @@ const onSubmit = () => {
 
 const resetForm = () => {
   form.name = "";
-  formValidationState.nameBlured = false;
+  formValidationState.nameValid = true;
   form.lastName = "";
-  formValidationState.lastNameBlured = false;
+  formValidationState.lastNameValid = true;
   form.email = "";
-  formValidationState.emailBlured = false;
+  formValidationState.emailValid = true;
   form.birthday = "";
-  formValidationState.birthdayBlured = false;
+  formValidationState.birthdayValid = true;
   form.province = null;
   form.phone = "";
-  formValidationState.phoneBlured = false;
+  formValidationState.phoneValid = true;
 };
 
 const validString = (text) => {
